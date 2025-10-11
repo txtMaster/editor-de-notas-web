@@ -22,7 +22,6 @@
 		overflow-x: hidden;
 	}
 	.title {
-		min-width: fit-content;
 		text-transform: uppercase;
 		font-weight: bold;
 	}

@@ -13,9 +13,11 @@ type Props = BasicComponent & {
     onReload?:()=>void
     onDelete?:()=>void
     onShare?:()=>void
+    disabled?:boolean
 }
 
 export const CrudButtons:React.FC<Props> = ({
+    disabled = false,
     className = "",
     onAdd = ()=>{},
     onSave = () => {},
@@ -24,20 +26,22 @@ export const CrudButtons:React.FC<Props> = ({
     onShare = ()=>{},
 }) => {
 	return (
-		<div className={`c-crudbuttons ${s.root} ${className}`}>
+		<div className={`
+            c-crudbuttons ${s.root} ${className} ${disabled ? "disabled" : ""}
+        `}>
 			<button className="add" onClick={onAdd}>
 				<AddIcon />
 			</button>
-			<button className="save" onClick={onSave}>
+			<button className="save" onClick={onSave} disabled={disabled}>
 				<SaveIcon />
 			</button>
-			<button className="reload" onClick={onReload}>
+			<button className="reload" onClick={onReload} disabled={disabled}>
 				<ReloadIcon />
 			</button>
-			<button className="delete" onClick={onDelete}>
+			<button className="delete" onClick={onDelete} disabled={disabled}>
 				<DeleteIcon />
 			</button>
-			<button className="share" onClick={onShare}>
+			<button className="share" onClick={onShare} disabled={disabled}>
 				<ShareIcon />
 			</button>
 		</div>

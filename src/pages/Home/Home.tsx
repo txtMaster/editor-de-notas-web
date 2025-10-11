@@ -82,6 +82,7 @@ export const Home = () => {
 				<div className={s.editor}>
 					<NoteEditor onChange={setEditedNote} note={editedNote} />
 					<CrudButtons
+						disabled = {editedNote === null}
 						className={s.crudbuttons}
 						onAdd={() => createNote(NoteModel.default())}
 						onSave={() => saveNote(editedNote)}
