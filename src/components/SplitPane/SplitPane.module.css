@@ -1,0 +1,51 @@
+@layer component {
+	.root {
+		position: relative;
+		display: flex;
+		height: 100%;
+		overflow: hidden;
+	}
+	.pane {
+		align-self: stretch;
+		overflow: auto;
+		max-height: 100%;
+	}
+	.divider {
+		display: block;
+		align-items: center;
+		overflow: hidden;
+		height: 100%;
+		/*
+		background-image: linear-gradient(
+			to left,
+			red,
+			transparent,
+			orange,
+			transparent
+		);
+        */
+		cursor: col-resize;
+		user-select: none;
+		&::before,
+		&::after {
+			position: absolute;
+			display: block;
+			content: "";
+            transform: translateX(-50%);
+		}
+        &::before{
+            width: 4px;
+            height: 100%;
+            transition: background-color .1s;
+            background-color: rgb(62, 62, 62);
+        }
+		&::after {
+            transform: translate(-50%,-50%);
+			width: 10px;
+			height: 30px;
+			top: 50%;
+
+			background-color: rgb(126, 126, 126);
+		}
+	}
+}

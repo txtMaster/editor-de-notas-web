@@ -1,0 +1,26 @@
+:root{
+    --main-h: 220deg;
+    --main-c:0.002;
+    --main-l:0.26;
+    --l-1:0.3;
+    --l-2:0.34;
+    --l-3:0.38;
+    --l-4:0.5;
+
+    --em--3:.4em;
+    --em--2:.6em;
+    --em--1:.8em;
+    --em:1em;
+    --em-1:1.2em;
+    --em-2:1.4em;
+    --em-3:1.6em;
+    --em-4:2em;
+    --em-5:2.4em;
+
+}
+
+input,textarea{
+    background: none;
+    outline: none;
+    border: none;
+}

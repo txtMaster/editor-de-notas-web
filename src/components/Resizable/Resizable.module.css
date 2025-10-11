@@ -1,0 +1,44 @@
+@layer component {
+	.root, :global(.c-resizable) {
+		max-width: 90%;
+		display: flex;
+		overflow: visible;
+		transition: max-width 0.2s ease-in-out;
+		position: relative;
+		&:global(.hide) {
+			max-width: 0px !important;
+		}
+	}
+	:global(.divider) {
+		position: absolute;
+		top: 0;
+		right: 0;
+		display: block;
+		align-items: center;
+		overflow: visible;
+		height: 100%;
+		cursor: col-resize;
+		user-select: none;
+		&::before,
+		&::after {
+			position: absolute;
+			display: block;
+			content: "";
+			transform: translateX(-50%);
+		}
+		&::before {
+			width: 4px;
+			height: 100%;
+			transition: background-color 0.1s;
+			background-color: rgb(62, 62, 62);
+		}
+		&::after {
+			transform: translate(-50%, -50%);
+			width: 10px;
+			height: 30px;
+			top: 50%;
+
+			background-color: rgb(126, 126, 126);
+		}
+	}
+}

@@ -1,0 +1,18 @@
+@layer component {
+	.root {
+		background-color: oklch(from var(--main-color) var(--l-1) c h);
+		position: relative;
+		height: 100%;
+		width: 100%;
+		/*transition: width .2s ease;*/
+		overflow: hidden;
+		opacity: 1;
+		transition: color .2s;
+		&.hidden {
+			transition: color 1s;
+			color: transparent !important;
+		}
+		&:hover{
+		}
+	}
+}

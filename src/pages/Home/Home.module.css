@@ -1,0 +1,131 @@
+@layer page {
+	.root {
+		position: relative;
+		display: flex;
+		overflow: hidden;
+		height: 100vh;
+		width: 100vw;
+	}
+	.multipane {
+		display: flex;
+		height: 100%;
+		width: 100%;
+		--main-color: oklch(var(--main-l) var(--main-c) var(--main-h));
+		background-color: var(--main-color);
+
+		.togglebuttons {
+			background-color: oklch(from var(--main-color) var(--l-2) c h);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			padding: var(--em--1);
+			gap: var(--em);
+			button {
+				width: var(--em-5);
+				aspect-ratio: 1/1;
+				display: grid;
+				place-content: center;
+				svg {
+					height: var(--em-2);
+					width: var(--em-2);
+					aspect-ratio: 1/1;
+					color: white;
+				}
+			}
+			button:hover {
+				background-color: oklch(from var(--main-color) var(--l-3) c h);
+			}
+		}
+		.pane {
+			background-color: oklch(from var(--main-color) var(--l-1) c h);
+			height: 100%;
+			width: 200px;
+		}
+	}
+	.resizable {
+		max-width: 50vw;
+		&:global(.hide) :global(.divider) {
+			opacity: 0 !important;
+		}
+		:global(.divider) {
+			transition: opacity 0.1s 0.1s;
+		}
+	}
+	.editor {
+		overflow: hidden;
+		display: flex;
+		position: relative;
+		justify-content: space-between;
+		min-width: 0px;
+		width: 100%;
+		flex-basis: 0;
+		flex-grow: 1;
+	}
+	:global(.noteeditor) {
+		gap: var(--em-2);
+		padding-block: var(--em-1);
+		margin-inline: auto;
+		padding-inline: var(--em);
+		flex-grow: 1;
+		max-width: 70vw;
+		min-width: 0;
+		label {
+			gap: var(--em);
+			font-size: var(--em--1);
+			color: oklch(from currentColor calc(l * 0.8) c h);
+		}
+		label:global(.content) {
+			flex-grow: 1;
+		}
+		input,
+		textarea {
+			color: oklch(from currentColor calc(l * 1.5) c h);
+			font-size: var(--em-2);
+		}
+		:global(textarea.content) {
+			overflow: hidden scroll;
+			height: 100%;
+			resize: none;
+			width: 100%;
+		}
+	}
+	.crudbuttons {
+		display: flex;
+		position: relative;
+		flex-direction: column;
+		height: 100%;
+		width: fit-content;
+		gap: var(--em--3);
+		margin: var(--em--3);
+		button {
+			position: relative;
+			box-sizing: content-box;
+			padding: var(--em--3);
+			width: var(--em-1);
+			height: var(--em-1);
+			aspect-ratio: 1/1;
+			color: rgb(181, 181, 181);
+			svg {
+				height: 100%;
+				width: 100%;
+			}
+		}
+		:global(.delete) {
+			background-color: rgb(69, 36, 36);
+			color: rgb(255, 189, 189);
+		}
+	}
+	.notelist {
+		height: 100%;
+		width: 100%;
+		padding: var(--em);
+		gap: var(--em--1);
+	}
+}
+
+.icon {
+	fill: red;
+}
+button.active {
+	background-color: oklch(from var(--main-color) var(--l-4) c h);
+}

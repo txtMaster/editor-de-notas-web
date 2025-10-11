@@ -1,0 +1,12 @@
+@layer component{
+    .root{
+        display: flex;
+        flex-direction: column;
+    }
+    .button{
+        
+    }
+    .active{
+        
+    }
+}
