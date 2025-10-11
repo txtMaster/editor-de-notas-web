@@ -2,6 +2,7 @@
     .root{
         button:disabled{
             opacity: .6;
+            filter: saturate(0);
             pointer-events: none;
         }
     }

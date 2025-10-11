@@ -66,7 +66,7 @@ export const Home = () => {
 							[Sections.Config]: <div>configuracion</div>,
 							[Sections.MyNotes]: (
 								<NoteList
-									selecetdIds={selectedIds}
+									selectedIds={selectedIds}
 									orderedNotes={orderedNotes}
 									className={s.notelist}
 									notes={notes}
