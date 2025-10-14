@@ -1,0 +1,1 @@
+export type OrderCallback<T> = (a:T,b:T)=>number

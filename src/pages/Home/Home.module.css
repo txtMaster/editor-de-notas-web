@@ -1,4 +1,6 @@
 @layer page {
+	input{
+	}
 	.root {
 		position: relative;
 		display: flex;
@@ -41,6 +43,21 @@
 			height: 100%;
 			width: 200px;
 		}
+		.toggleorder{
+			justify-content: space-around;
+			flex-direction: row;
+			button{
+				padding: var(--em--3);
+				aspect-ratio: auto;
+				width: 100%;
+			}
+		}
+	}
+
+	.listpane{
+		display: flex;
+		flex-direction: column;
+		height: 100%;
 	}
 	.resizable {
 		max-width: 50vw;
@@ -120,6 +137,20 @@
 		width: 100%;
 		padding: var(--em);
 		gap: var(--em--1);
+	}
+	.profile{
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: start;
+		padding: var(--em);
+		gap: var(--em);
+		.profileicon{
+			width: 50%;
+			height: 50%;
+			aspect-ratio: 1/1;
+		}
 	}
 }
 

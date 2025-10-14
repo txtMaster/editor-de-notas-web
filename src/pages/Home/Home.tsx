@@ -3,13 +3,16 @@ import s from "./Home.module.css";
 import { NoteList } from "../../components/NoteList/NoteList";
 import { SwitchPane } from "../../components/SwitchPane/SwitchPane";
 import ConfigIcon from "../../assets/svg/config.svg?react";
-import MyNotesIcon from "../../assets/svg/notes.svg?react";
+import NotesIcon from "../../assets/svg/notes.svg?react";
+import ProfileIcon from "../../assets/svg/profile.svg?react";
 import { ToggleButtons } from "../../components/ToggleButtons/ToggleButtons";
 import { Resizable } from "../../components/Resizable/Resizable";
 import { NoteEditor } from "../../components/NoteEditor/NoteEditor";
 import NoteModel, { SelectableNote } from "../../model/NoteModels";
 import { CrudButtons } from "../../components/CrudButtons/CrudButtons";
-import { useNoteManager } from "../../hooks/useNotesManager";
+import type { Note } from "../../types/Note";
+import { useListManager } from "../../hooks/useListManager";
+import { ProfileSection } from "../../components/ProfileSection/ProfileSection";
 
 const Sections = {
 	MyNotes: "mynotes",
@@ -20,32 +23,33 @@ const Sections = {
 	Reload: "reload",
 } as const;
 
-const defaultNotes = new Map<string, SelectableNote>([
-	[
-		"2",
-		new SelectableNote({
-			id: "2",
-			title: "nota 2",
-			content: "contenido 2",
-		}),
-	],
-]);
+const OrderFunctions = {
+	id: (a: Note, b: Note) => parseFloat(a.id) - parseFloat(b.id),
+	title: (a: Note, b: Note) => a.title.localeCompare(b.title),
+	content: (a: Note, b: Note) => a.content.localeCompare(b.content),
+};
 
 export const Home = () => {
 	const [sectionKey, setSectionKey] = useState<string | null>(null);
 	const {
-		notes,
-		orderedNotes,
+		items: notes,
+		orderedItems: orderedNotes,
 		selectedIds,
 		setSelectedIds,
-		editedNote,
-		setEditedNote,
-		createNote,
-		saveNote,
-		deleteNotes,
+		currentItem: editedNote,
+		setCurrentItem: setEditedNote,
+		createItem: createNote,
+		saveItem: saveNote,
+		deleteSelectedItems: deleteNotes,
 		currentId,
-		orderCallback
-	} = useNoteManager(defaultNotes);
+		setSortBy,
+		setIsAsc,
+		isAsc,
+		sortBy,
+	} = useListManager<Note, SelectableNote>(
+		SelectableNote,
+		OrderFunctions
+	);
 
 	return (
 		<div className={s.root}>
@@ -56,33 +60,56 @@ export const Home = () => {
 					onToggleKey={setSectionKey}
 					contents={{
 						[Sections.Config]: <ConfigIcon />,
-						[Sections.MyNotes]: <MyNotesIcon />,
+						[Sections.MyNotes]: <NotesIcon/>,
+						[Sections.Profile]:<ProfileIcon/>
 					}}
 				/>
 				<Resizable className={s.resizable} hide={sectionKey === null}>
 					<SwitchPane
+						className={s.switchpane}
 						sectionKey={sectionKey}
 						sections={{
 							[Sections.Config]: <div>configuracion</div>,
 							[Sections.MyNotes]: (
-								<NoteList
-									selectedIds={selectedIds}
-									orderedNotes={orderedNotes}
-									className={s.notelist}
-									notes={notes}
-									orderCallback={orderCallback}
-									onSelectIds={setSelectedIds}
-									//onDeleteNotes={deleteNotes}
-									//onCreateNote={createNote}
-								/>
+								<div className={s.listpane}>
+									<ToggleButtons
+										unselectable={false}
+										className={`${s.togglebuttons} ${s.toggleorder}`}
+										activeClass={s.active}
+										onClickButton={(k) => {
+											console.log(sortBy === k);
+											if (!k) return;
+											if (sortBy === k) setIsAsc((pre) => !pre);
+											else setSortBy(k);
+										}}
+										contents={{
+											id: "id",
+											content: "content",
+											title: "title",
+										}}
+									/>
+									<NoteList
+										selectedIds={selectedIds}
+										orderedNotes={orderedNotes}
+										className={s.notelist}
+										notes={notes}
+										orderCallback={OrderFunctions[sortBy]}
+										isReverse={isAsc}
+										onSelectIds={setSelectedIds}
+										//onDeleteNotes={deleteNotes}
+										//onCreateNote={createNote}
+									/>
+								</div>
 							),
+							[Sections.Profile]:
+							<ProfileSection className={s.profile}></ProfileSection>
 						}}
 					/>
 				</Resizable>
 				<div className={s.editor}>
 					<NoteEditor onChange={setEditedNote} note={editedNote} />
 					<CrudButtons
-						disabled = {editedNote === null}
+						disabled={editedNote === null}
 						className={s.crudbuttons}
 						onAdd={() => createNote(NoteModel.default())}
 						onSave={() => saveNote(editedNote)}

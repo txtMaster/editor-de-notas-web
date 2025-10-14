@@ -9,9 +9,10 @@ type Prop = {
 	notes: Map<string, SelectableNote>;
 	orderedNotes: SelectableNote[];
 	selectedIds: Set<string>;
+	orderCallback: (a: Note, b: Note) => number;
+	isReverse:boolean
 	onSelectIds?: (ids: Set<string>) => void;
 	onDeleteNotes?: (ids: string[]) => void;
-	orderCallback: (a: Note, b: Note) => number;
 };
 
 export const NoteList = Base<Prop>(
@@ -22,6 +23,7 @@ export const NoteList = Base<Prop>(
 		onSelectIds = () => {},
 		orderCallback,
 		className = "",
+		isReverse = false
 	}) => {
 		const  {
 			handleClickItem
@@ -30,6 +32,7 @@ export const NoteList = Base<Prop>(
 			orderedNotes,
 			selectedIds,
 			orderCallback,
+			isReverse,
 			onSelectIds
 		)
 

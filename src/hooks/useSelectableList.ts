@@ -2,12 +2,14 @@ import { useCallback, useState } from "react";
 import type { Selectable } from "../types/Selectable";
 import type { WithID } from "../types/WithID";
 
+//hook para poder seleccionar varios elementos de una lista
 export function useSelectableList<T extends Selectable & WithID>(
 	items: Map<string, T>,
 	orderedItems: T[],
 	selectedIds: Set<string>,
 	orderCallback: (a: T, b: T) => number,
-	onSelectionChange?: (selected: Set<string>) => void
+	isReverse: boolean = false,
+	onSelectionChange: (selected: Set<string>) => void = () => {}
 ) {
 	const [lastSelected, setLastSelected] = useState<string | null>(null);
 
@@ -50,9 +52,19 @@ export function useSelectableList<T extends Selectable & WithID>(
 			if (startId === endId) return selectSingle(endId);
 
 			const range: string[] = [...selectedIds];
-			const reversed = orderCallback(startNote, endNote) > 0;
-			if (reversed) [endNote, startNote] = [startNote, endNote];
-			const add = reversed
+			/*
+			const reversed = !isReverse
+				? orderCallback(startNote, endNote) > 0
+				: orderCallback(startNote, endNote) < 0;
+			*/
+			console.log(startNote, endNote);
+			console.log(orderCallback, orderCallback(startNote, endNote));
+			const toDown = isReverse
+				? orderCallback(startNote, endNote) > 0
+				: orderCallback(startNote, endNote) < 0;
+			console.log("todown:", toDown);
+			if (toDown) [endNote, startNote] = [startNote, endNote];
+			const add = toDown
 				? (id: string) => range.unshift(id)
 				: (id: string) => range.push(id);
 			let collecting = false;
@@ -66,6 +78,7 @@ export function useSelectableList<T extends Selectable & WithID>(
 			notifyChange(new Set(range));
 		},
 		[
+			isReverse,
 			items,
 			lastSelected,
 			notifyChange,
@@ -85,19 +98,18 @@ export function useSelectableList<T extends Selectable & WithID>(
 	);
 
 	const clearSelection = useCallback(() => {
-        setLastSelected(null);
+		setLastSelected(null);
 		notifyChange(new Set());
 	}, [notifyChange]);
 
-
-    return {
-        selectedIds,
-        setSelectedIds:notifyChange,
-        lastSelected,
-        selectSingle,
-        selectRange,
-        toggleSelect,
-        handleClickItem,
-        clearSelection
-    }
+	return {
+		selectedIds,
+		setSelectedIds: notifyChange,
+		lastSelected,
+		selectSingle,
+		selectRange,
+		toggleSelect,
+		handleClickItem,
+		clearSelection,
+	};
 }

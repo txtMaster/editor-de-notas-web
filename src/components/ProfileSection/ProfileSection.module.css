@@ -1,0 +1,33 @@
+@layer component{
+    .root{
+        display: flex;
+        position: relative;
+        justify-content: start;
+        align-items: center;
+        height: 100%;
+        width: 100%;
+
+        label{
+            display: flex;
+            flex-wrap: wrap;
+            align-self: stretch;
+        }
+        input{
+            font-size: inherit;
+            width: 100%;
+            flex-grow: 1;
+        }
+
+        :global(.icon){
+            width: 20%;
+            height: min-content;
+        }
+        :global(.password-wrap){
+            display: flex;
+            width: 100%;
+            button{
+                flex-grow: 1;
+            }
+        }
+    }
+}
