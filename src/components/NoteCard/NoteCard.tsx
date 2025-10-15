@@ -11,9 +11,9 @@ type Prop = OutCSS & {
 export const NoteCard: React.FC<Prop> = ({note,onClick,className=""}) => {
   const {title,content} = note;
   return (
-    <div className={`${s.root} ${className}`} onClick={onClick}>
-        <div className={s.title}>{title}</div>
-        <div className={s.content}>{content}</div>
+    <div className={`notecard ${s.root} ${className}`} onClick={onClick}>
+        <div className={`title ${s.title}`}>{title}</div>
+        <div className={`content ${s.content}`}>{content}</div>
     </div>
   )
 }

@@ -5,6 +5,7 @@ import { SwitchPane } from "../../components/SwitchPane/SwitchPane";
 import ConfigIcon from "../../assets/svg/config.svg?react";
 import NotesIcon from "../../assets/svg/notes.svg?react";
 import ProfileIcon from "../../assets/svg/profile.svg?react";
+import ArrowUpIcon from "../../assets/svg/arrow-up.svg?react";
 import { ToggleButtons } from "../../components/ToggleButtons/ToggleButtons";
 import { Resizable } from "../../components/Resizable/Resizable";
 import { NoteEditor } from "../../components/NoteEditor/NoteEditor";
@@ -46,22 +47,22 @@ export const Home = () => {
 		setIsAsc,
 		isAsc,
 		sortBy,
-	} = useListManager<Note, SelectableNote>(
-		SelectableNote,
-		OrderFunctions
-	);
+	} = useListManager<Note, SelectableNote>(SelectableNote, OrderFunctions);
 
 	return (
 		<div className={s.root}>
 			<div className={s.multipane}>
 				<ToggleButtons
-					className={s.togglebuttons}
+					className={`
+						${s.togglebuttons}
+						${s.togglesections}
+					`}
 					activeClass={s.active}
 					onToggleKey={setSectionKey}
 					contents={{
-						[Sections.Config]: <ConfigIcon />,
-						[Sections.MyNotes]: <NotesIcon/>,
-						[Sections.Profile]:<ProfileIcon/>
+						[Sections.MyNotes]: <><NotesIcon />notes</>,
+						[Sections.Config]: <><ConfigIcon />config</>,
+						[Sections.Profile]: <><ProfileIcon />profile</>,
 					}}
 				/>
 				<Resizable className={s.resizable} hide={sectionKey === null}>
@@ -71,38 +72,72 @@ export const Home = () => {
 						sections={{
 							[Sections.Config]: <div>configuracion</div>,
 							[Sections.MyNotes]: (
-								<div className={s.listpane}>
-									<ToggleButtons
-										unselectable={false}
-										className={`${s.togglebuttons} ${s.toggleorder}`}
-										activeClass={s.active}
-										onClickButton={(k) => {
-											console.log(sortBy === k);
-											if (!k) return;
-											if (sortBy === k) setIsAsc((pre) => !pre);
-											else setSortBy(k);
-										}}
-										contents={{
-											id: "id",
-											content: "content",
-											title: "title",
-										}}
-									/>
-									<NoteList
-										selectedIds={selectedIds}
-										orderedNotes={orderedNotes}
-										className={s.notelist}
-										notes={notes}
-										orderCallback={OrderFunctions[sortBy]}
-										isReverse={isAsc}
-										onSelectIds={setSelectedIds}
-										//onDeleteNotes={deleteNotes}
-										//onCreateNote={createNote}
-									/>
-								</div>
+								<article className={s.explorer}>
+									<div className={s.folders}>
+										<div className={s.dir}>
+											Home 
+											<div>../subfolder/currentFolder</div>
+										</div>
+										<label className={s.foldername}>
+											Folder name: 
+											<input type="text" />
+											<button>save</button>
+										</label>
+									</div>
+									<div className={s.notes}>
+										<div className={s.filter}>
+											Filters:
+											<ToggleButtons
+												unselectable={false}
+												className={`
+											${s.togglebuttons} 
+											${s.toggleorder}
+											${isAsc ? s.asc : ""}
+										`}
+												activeClass={s.active}
+												onClickButton={(k) => {
+													console.log(sortBy === k);
+													if (!k) return;
+													if (sortBy === k) setIsAsc((pre) => !pre);
+													else setSortBy(k);
+												}}
+												contents={{
+													id: (
+														<>
+															id
+															<ArrowUpIcon />
+														</>
+													),
+													content: (
+														<>
+															content
+															<ArrowUpIcon />
+														</>
+													),
+													title: (
+														<>
+															title
+															<ArrowUpIcon />
+														</>
+													),
+												}}
+											/>
+										</div>
+										<NoteList
+											selectedIds={selectedIds}
+											orderedNotes={orderedNotes}
+											className={s.notelist}
+											notes={notes}
+											orderCallback={OrderFunctions[sortBy]}
+											isReverse={isAsc}
+											onSelectIds={setSelectedIds}
+										/>
+									</div>
+								</article>
 							),
-							[Sections.Profile]:
-							<ProfileSection className={s.profile}></ProfileSection>
+							[Sections.Profile]: (
+								<ProfileSection className={s.profile}></ProfileSection>
+							),
 						}}
 					/>
 				</Resizable>

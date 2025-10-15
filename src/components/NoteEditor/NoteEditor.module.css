@@ -1,23 +1,40 @@
-@layer component{
-    .root{
-        display: flex;
+@layer component {
+	.root {
+		display: flex;
 		flex-direction: column;
 		align-items: center;
-        height: 100%;
-        *{
-            width: 100%;
-        }
-        label{
-            display: flex;
-            flex-direction: column;
-            justify-content: stretch;
+		height: 100%;
+		>* {
+			width: 100%;
+		}
+
+		label {
+			display: flex;
+			flex-direction: column;
+			justify-content: stretch;
 			font-size: 1em;
 		}
-        textarea{
-            height: 100%;
-        }
-        button{
-            height: 2em;
-        }
-    }
+		:global(.dates) {
+			:global(.date) {
+					overflow-x: hidden;
+				:global(.value),:global(.name) {
+					overflow-x: hidden;
+					text-overflow: ellipsis;
+				}
+				:global(.value){
+					min-width: min-content;
+				}
+			}
+		}
+		input {
+			text-overflow: ellipsis;
+			overflow-x: hidden;
+		}
+		textarea {
+			height: 100%;
+		}
+		button {
+			height: 2em;
+		}
+	}
 }

@@ -1,22 +1,19 @@
 @layer page {
-	input{
-	}
 	.root {
 		position: relative;
 		display: flex;
 		overflow: hidden;
-		height: 100vh;
+		height: 100dvh;
 		width: 100vw;
+		background: radial-gradient(circle at center top, #4d484e, #333132);
 	}
 	.multipane {
 		display: flex;
 		height: 100%;
 		width: 100%;
 		--main-color: oklch(var(--main-l) var(--main-c) var(--main-h));
-		background-color: var(--main-color);
 
 		.togglebuttons {
-			background-color: oklch(from var(--main-color) var(--l-2) c h);
 			display: flex;
 			flex-direction: column;
 			align-items: center;
@@ -38,23 +35,43 @@
 				background-color: oklch(from var(--main-color) var(--l-3) c h);
 			}
 		}
+		.togglesections {
+			width: min-content;
+			background-color: #444646;
+			padding: var(--em--1);
+			button {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: var(--em--4);
+				width: 100%;
+				svg {
+					padding: var(--em--2);
+					border-radius: var(--em--1);
+					height: fit-content;
+					width: 100%;
+					font-weight: lighter;
+				}
+			}
+			button:global(.active) {
+				color: #efe2ff;
+				svg {
+					color: inherit;
+					background-color: #6a5d73;
+					outline: currentColor 2px solid;
+					box-shadow: 0px 4px 10px oklch(75.133% 0.10212 320.781 / .5);
+				}
+			}
+		}
+
 		.pane {
 			background-color: oklch(from var(--main-color) var(--l-1) c h);
 			height: 100%;
 			width: 200px;
 		}
-		.toggleorder{
-			justify-content: space-around;
-			flex-direction: row;
-			button{
-				padding: var(--em--3);
-				aspect-ratio: auto;
-				width: 100%;
-			}
-		}
 	}
 
-	.listpane{
+	.listpane {
 		display: flex;
 		flex-direction: column;
 		height: 100%;
@@ -79,25 +96,56 @@
 		flex-grow: 1;
 	}
 	:global(.noteeditor) {
-		gap: var(--em-2);
-		padding-block: var(--em-1);
+		gap: var(--em--2);
+		padding: var(--em-1);
+		padding-right: 0;
 		margin-inline: auto;
-		padding-inline: var(--em);
 		flex-grow: 1;
 		max-width: 70vw;
 		min-width: 0;
+
+		:global(.dates) {
+			display: flex;
+			flex-wrap: wrap;
+			gap: var(--em-5);
+			row-gap: var(--em--5);
+			:global(.date) {
+				gap: var(--em--1);
+				display: flex;
+				justify-content: start;
+				:global(.name) {
+				}
+				:global(.value) {
+					flex-grow: 1;
+					text-align: left;
+					font-weight: bold;
+					text-wrap: nowrap;
+				}
+			}
+		}
+
 		label {
-			gap: var(--em);
-			font-size: var(--em--1);
-			color: oklch(from currentColor calc(l * 0.8) c h);
+			text-align: left;
+			gap: var(--em---4);
+			font-size: var(--em);
+			color: oklch(from currentColor calc(l * 1) c h);
+		}
+		label:global(.title) input {
+			font-size: var(--em-5);
+			font-weight: bold;
+			letter-spacing: var(--em--5);
 		}
 		label:global(.content) {
+			margin-top: var(--em);
 			flex-grow: 1;
+			textarea {
+				font-size: var(--em-3);
+				letter-spacing: var(--em--5);
+			}
 		}
 		input,
 		textarea {
 			color: oklch(from currentColor calc(l * 1.5) c h);
-			font-size: var(--em-2);
 		}
 		:global(textarea.content) {
 			overflow: hidden scroll;
@@ -115,11 +163,12 @@
 		gap: var(--em--3);
 		margin: var(--em--3);
 		button {
+			font-size: var(--em-3);
 			position: relative;
 			box-sizing: content-box;
 			padding: var(--em--3);
-			width: var(--em-1);
-			height: var(--em-1);
+			width: 1em;
+			height: 1em;
 			aspect-ratio: 1/1;
 			color: rgb(181, 181, 181);
 			svg {
@@ -135,10 +184,18 @@
 	.notelist {
 		height: 100%;
 		width: 100%;
-		padding: var(--em);
 		gap: var(--em--1);
+		mask-image: linear-gradient(transparent,rgb(255, 0, 0) 4% 90%,transparent);
+		&::after{
+			display: block;
+			content: "dummy text";
+			opacity: 0;
+			width: 100%;
+			height: 10em;
+			font-size: 20px;
+		}
 	}
-	.profile{
+	.profile {
 		position: relative;
 		display: flex;
 		flex-direction: column;
@@ -146,17 +203,137 @@
 		justify-content: start;
 		padding: var(--em);
 		gap: var(--em);
-		.profileicon{
+		.profileicon {
 			width: 50%;
 			height: 50%;
 			aspect-ratio: 1/1;
+		}
+	}
+	section.switchpane {
+		display: flex;
+		flex-direction: column;
+		> article {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+	section.switchpane > article.explorer {
+		position: relative;
+		flex-grow: 1;
+		overflow: clip;
+		height: 100%;
+		background-image: radial-gradient(
+				circle at 100% 80%,
+				oklch(89% 0.117 202 / 0.3),
+				transparent 40%
+			),
+			radial-gradient(
+				circle at center left,
+				oklch(72.271% 0.06489 155.339 / 0.75) 0%,
+				oklch(56.265% 0.0789 154.2 / 0.75) 25% 14%,
+				transparent 75%
+			),
+			radial-gradient(
+				circle at top right,
+				oklch(70% 0.1 318 / 0.75),
+				oklch(59.68% 0.08 318 / 0.75) 10%,
+				oklch(40.108% 0.05 318 / 0.75) 50%,
+				oklch(33.289% 0.00004 271 / 0.75)
+			);
+		.folders {
+			padding: var(--em) var(--em-2);
+			gap: var(--em--2);
+			font-size: var(--em-1);
+			display: flex;
+			flex-direction: column;
+			justify-content: start;
+			background-color: oklch(30.118% 0.00003 271.152 / 0.5);
+			.dir {
+				display: flex;
+			}
+			.foldername {
+				display: flex;
+				gap: var(--em);
+				text-wrap: nowrap;
+				input {
+					font-size: var(--em);
+					width: 100%;
+					letter-spacing: var(--em--4);
+					word-spacing: var(--em--3);
+				}
+			}
+		}
+		.notes {
+			overflow: hidden;
+			display: flex;
+			height: 100%;
+			flex-direction: column;
+			padding: var(--em--2);
+			gap: var(--em--1);
+
+			.filter {
+				padding: var(--em);
+				padding-bottom: 0;
+				gap: var(--em);
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				align-items: center;
+				.toggleorder {
+					display: flex;
+					flex-grow: 1;
+					justify-content: space-around;
+					flex-direction: row;
+					padding: 0;
+					button {
+						font-weight: bold;
+						padding: var(--em--3);
+						flex-grow: 1;
+						background-color: oklch(42.289% 0.01255 310.878 / 0.4);
+						aspect-ratio: auto;
+						width: fit-content;
+						display: flex;
+						justify-content: space-between;
+						align-items: center;
+						text-align: left;
+					}
+					button:global(.active) {
+						background-color: oklch(61.578% 0.01919 307.993 / 0.75);
+					}
+					&.asc svg {
+						rotate: 180deg;
+					}
+				}
+			}
+			:global(.notelist) {
+				padding: var(--em);
+				margin-bottom: var(--em--2);
+				height: 100%;
+				gap: var(--em--2);
+				:global(.notecard) {
+					background-color: oklch(30.118% 0.00003 271 / 0.5);
+					align-items: start;
+					padding: var(--em--2) var(--em);
+					border-radius: var(--em);
+					&:global(.selected) {
+						background-color: oklch(30.118% 0.00003 271 / 1);
+						box-shadow: 0px var(--em--4) var(--em--1) oklch(0 0 0 / 0.25);
+					}
+					:global(.title) {
+						font-size: var(--em-1);
+						letter-spacing: var(--em--5);
+						word-spacing: var(--em--4);
+						font-weight: bolder;
+					}
+					:global(.content) {
+						font-size: var(--em-1);
+					}
+				}
+			}
 		}
 	}
 }
 
 .icon {
 	fill: red;
-}
-button.active {
-	background-color: oklch(from var(--main-color) var(--l-4) c h);
 }

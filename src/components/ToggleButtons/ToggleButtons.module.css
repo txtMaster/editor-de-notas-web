@@ -1,7 +1,7 @@
 @layer component{
     .root{
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
     }
     .button{
         

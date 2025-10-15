@@ -22,19 +22,28 @@ export const NoteEditor: React.FC<Props> = ({
 					type="text"
 					id="title"
 					className="title"
-					placeholder="title"
+					placeholder="Note name here!!"
 					value={note?.title ?? ""}
 					onChange={({ target }) => {
 						if (note !== null) onChange({ ...note, title: target.value });
 					}}
 				/>
 			</label>
+			<div className="dates">
+				<div className="date">
+					<div className="name">Created:</div>
+					<div className="value">20-22-2025</div>
+				</div>
+				<div className="date">
+					<div className="name">Updated:</div>
+					<div className="value">20-22-2025</div>
+				</div>
+			</div>
 			<label className="content">
-				Content
 				<textarea
 					id="content"
 					className="content"
-					placeholder="Content"
+					placeholder="Write anything here"
 					value={note?.content ?? ""}
 					onChange={({ target }) => {
 						if (note !== null) onChange({ ...note, content: target.value });

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import  { useEffect, useRef, useState } from "react";
 import s from "./Resizable.module.css";
 import { Base } from "../../utils/BaseComponent";
 
@@ -13,26 +13,25 @@ export const Resizable = Base<Props>(
 		const [size, setSize] = useState<number>(initSize);
 		const isDragging = useRef(false);
 
-		const onMouseDown = () => {
+		const onPointerDown = () => {
 			isDragging.current = true;
 		};
-		const onMouseUp = () => {
+		const onPointerUp = () => {
 			isDragging.current = false;
 		};
-		const onMouseMove = (e: MouseEvent) => {
+		const onPointerMove = (e: PointerEvent) => {
 			if (!isDragging.current || !rootRef.current) return;
 			const rect = rootRef.current.getBoundingClientRect();
 			const rectStyle = window.getComputedStyle(rootRef.current);
 			const newSize = e.clientX - rect.left - parseFloat(rectStyle.padding) * 2;
-			//console.log(rect.left,e.clientX,newSize)
 			setSize(Math.max(newSize, 0));
 		};
 		useEffect(() => {
-			window.addEventListener("mousemove", onMouseMove);
-			window.addEventListener("mouseup", onMouseUp);
+			window.addEventListener("pointermove", onPointerMove);
+			window.addEventListener("pointerup", onPointerUp);
 			return () => {
-				window.removeEventListener("mousemove", onMouseMove);
-				window.removeEventListener("mouseup", onMouseUp);
+				window.removeEventListener("pointermove", onPointerMove);
+				window.removeEventListener("pointerup", onPointerUp);
 			};
 		}, []);
 
@@ -43,7 +42,7 @@ export const Resizable = Base<Props>(
 				style={{ width: `${size}px` }}
 			>
 				{children}
-				<div className="divider" onMouseDown={onMouseDown}></div>
+				<div className="divider" onPointerDown={onPointerDown}></div>
 			</div>
 		);
 	}

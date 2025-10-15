@@ -37,7 +37,7 @@ export const NoteList = Base<Prop>(
 		)
 
 		return (
-			<div className={`c-notelist ${className} ${s.root}`}>
+			<div className={`notelist ${className} ${s.root}`}>
 				{orderedNotes
 					.map(({ id }) => {
 						const n = notes.get(id) ?? null;

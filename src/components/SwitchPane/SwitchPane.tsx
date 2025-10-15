@@ -16,7 +16,7 @@ export const SwitchPane: React.FC<Prop> = ({
 	const nextSection: React.ReactNode = sections[sectionKey ?? ""];
 
 	const rootClassName = `
-	c-switchpane
+	switchpane
 	${className} 
 	${s.root} ${!nextSection ? s.hidden : ""}
 	`;
@@ -25,5 +25,5 @@ export const SwitchPane: React.FC<Prop> = ({
 		sectionRef.current = nextSection;
 	}
 
-	return <div className={rootClassName}>{sectionRef.current}</div>;
+	return <section className={rootClassName}>{sectionRef.current}</section>;
 };

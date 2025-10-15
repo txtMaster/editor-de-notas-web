@@ -20,6 +20,8 @@
 		white-space: nowrap;
 		text-overflow: ellipsis;
 		overflow-x: hidden;
+		width: 100%;
+		text-align: left;
 	}
 	.title {
 		text-transform: uppercase;
@@ -27,7 +29,6 @@
 	}
 	.content {
 		font-size: .8em;
-		text-align: center;
 		color: oklch(from currentColor calc(l * 0.9) c h);
 	}
 }

@@ -27,7 +27,7 @@ export const CrudButtons:React.FC<Props> = ({
 }) => {
 	return (
 		<div className={`
-            c-crudbuttons ${s.root} ${className} ${disabled ? "disabled" : ""}
+            crudbuttons ${s.root} ${className} ${disabled ? "disabled" : ""}
         `}>
 			<button className="add" onClick={onAdd}>
 				<AddIcon />

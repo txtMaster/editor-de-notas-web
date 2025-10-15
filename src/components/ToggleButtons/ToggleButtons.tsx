@@ -38,7 +38,10 @@ export function ToggleButtons<T extends Record<string, React.ReactNode>>({
 						onClickButton(k)
 						toggleKey(k)
 					}}
-					className={`${s.button} ${currentKey === k ? activeClass : ""}`}
+					className={`
+						${s.button} 
+						${currentKey === k ? `active ${activeClass}` : ""}
+					`}
 				>
 					{content}
 				</button>
