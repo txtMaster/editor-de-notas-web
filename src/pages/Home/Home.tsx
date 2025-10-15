@@ -50,8 +50,7 @@ export const Home = () => {
 	} = useListManager<Note, SelectableNote>(SelectableNote, OrderFunctions);
 
 	return (
-		<div className={s.root}>
-			<div className={s.multipane}>
+		<div className={s.home}>
 				<ToggleButtons
 					className={`
 						${s.togglebuttons}
@@ -90,7 +89,6 @@ export const Home = () => {
 											<ToggleButtons
 												unselectable={false}
 												className={`
-											${s.togglebuttons} 
 											${s.toggleorder}
 											${isAsc ? s.asc : ""}
 										`}
@@ -153,8 +151,7 @@ export const Home = () => {
 						}}
 						onDelete={() => deleteNotes()}
 					/>
-				</div>
-			</div>
+				</div>			
 		</div>
 	);
 };

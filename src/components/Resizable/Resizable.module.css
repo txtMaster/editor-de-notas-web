@@ -1,12 +1,24 @@
 @layer component {
-	.root, :global(.c-resizable) {
+	.root {
 		max-width: 90%;
 		display: flex;
 		overflow: visible;
-		transition: max-width 0.2s ease-in-out;
+		transition-duration: 0.2s;
+		transition-property: max-width;
 		position: relative;
 		&:global(.hide) {
 			max-width: 0px !important;
+			* {
+				scrollbar-width: none;
+				&::-webkit-scrollbar {
+					background: transparent !important;
+				}
+			}
+		}
+		&:global(.hide){
+			:global(.divider){
+				display: none;
+			}
 		}
 	}
 	:global(.divider) {
@@ -38,7 +50,7 @@
 		&::after {
 			transform: translate(-50%, -50%);
 			border-radius: 10px;
-			
+
 			width: 10px;
 			height: 60px;
 			top: 50%;

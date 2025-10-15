@@ -38,7 +38,7 @@ export const Resizable = Base<Props>(
 		return (
 			<div
 				ref={rootRef}
-				className={`c-resizable ${s.root} ${hide ? "hide" : ""} ${className}`}
+				className={`resizable ${s.root} ${hide ? "hide" : ""} ${className}`}
 				style={{ width: `${size}px` }}
 			>
 				{children}

@@ -1,5 +1,5 @@
 @layer component{
-    .root{
+    .togglebuttons{
         display: flex;
         flex-wrap: wrap;
     }

@@ -30,7 +30,7 @@ export function ToggleButtons<T extends Record<string, React.ReactNode>>({
 	};
 
 	return (
-		<div className={`${s.root} ${className}`}>
+		<div className={`togglebuttons ${className}`}>
 			{Object.entries(contents).map(([k, content]) => (
 				<button
 					key={k}

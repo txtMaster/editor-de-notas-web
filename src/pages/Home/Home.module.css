@@ -1,89 +1,84 @@
 @layer page {
-	.root {
+	.home {
 		position: relative;
 		display: flex;
 		overflow: hidden;
 		height: 100dvh;
 		width: 100vw;
+		/*
 		background: radial-gradient(circle at center top, #4d484e, #333132);
-	}
-	.multipane {
-		display: flex;
-		height: 100%;
-		width: 100%;
+		*/
+		background-color: #3f3a3c;
 		--main-color: oklch(var(--main-l) var(--main-c) var(--main-h));
+	}
+	:global(.togglebuttons) {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: var(--em--1);
+		gap: var(--em);
+		button {
+			width: var(--em-5);
+			aspect-ratio: 1/1;
+			display: grid;
+			place-content: center;
+			svg {
+				height: var(--em-2);
+				width: var(--em-2);
+				aspect-ratio: 1/1;
+				color: white;
+			}
+		}
+		button:hover {
+			background-color: oklch(from var(--main-color) var(--l-3) c h);
+		}
+	}
+	:global(.switchpane) {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		> article {
+			display: flex;
+			flex-direction: column;
+		}
+	}
+	.togglesections {
+		width: min-content;
+		background-color: #444646;
 
-		.togglebuttons {
+		padding: var(--em--1);
+		button {
 			display: flex;
 			flex-direction: column;
 			align-items: center;
-			padding: var(--em--1);
-			gap: var(--em);
-			button {
-				width: var(--em-5);
-				aspect-ratio: 1/1;
-				display: grid;
-				place-content: center;
-				svg {
-					height: var(--em-2);
-					width: var(--em-2);
-					aspect-ratio: 1/1;
-					color: white;
-				}
-			}
-			button:hover {
-				background-color: oklch(from var(--main-color) var(--l-3) c h);
-			}
-		}
-		.togglesections {
-			width: min-content;
-			background-color: #444646;
-			padding: var(--em--1);
-			button {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				gap: var(--em--4);
+			gap: var(--em--4);
+			width: 100%;
+			svg {
+				padding: var(--em--2);
+				border-radius: var(--em--1);
+				height: fit-content;
 				width: 100%;
-				svg {
-					padding: var(--em--2);
-					border-radius: var(--em--1);
-					height: fit-content;
-					width: 100%;
-					font-weight: lighter;
-				}
-			}
-			button:global(.active) {
-				color: #efe2ff;
-				svg {
-					color: inherit;
-					background-color: #6a5d73;
-					outline: currentColor 2px solid;
-					box-shadow: 0px 4px 10px oklch(75.133% 0.10212 320.781 / .5);
-				}
+				font-weight: lighter;
 			}
 		}
-
-		.pane {
-			background-color: oklch(from var(--main-color) var(--l-1) c h);
-			height: 100%;
-			width: 200px;
+		button:global(.active) {
+			color: #efe2ff;
+			svg {
+				color: inherit;
+				background-color: #6a5d73;
+				outline: currentColor 2px solid;
+				box-shadow: 0px 4px 10px oklch(75.133% 0.10212 320.781 / 0.5);
+			}
 		}
 	}
-
-	.listpane {
+	.multipane {
 		display: flex;
-		flex-direction: column;
-		height: 100%;
+		width: 100%;
+		overflow: hidden;
 	}
+
 	.resizable {
-		max-width: 50vw;
-		&:global(.hide) :global(.divider) {
-			opacity: 0 !important;
-		}
-		:global(.divider) {
-			transition: opacity 0.1s 0.1s;
-		}
+		max-width: 50%;
 	}
 	.editor {
 		overflow: hidden;
@@ -101,7 +96,7 @@
 		padding-right: 0;
 		margin-inline: auto;
 		flex-grow: 1;
-		max-width: 70vw;
+		max-width: 80vmin;
 		min-width: 0;
 
 		:global(.dates) {
@@ -139,7 +134,7 @@
 			margin-top: var(--em);
 			flex-grow: 1;
 			textarea {
-				font-size: var(--em-3);
+				font-size: var(--em-2);
 				letter-spacing: var(--em--5);
 			}
 		}
@@ -185,8 +180,10 @@
 		height: 100%;
 		width: 100%;
 		gap: var(--em--1);
-		mask-image: linear-gradient(transparent,rgb(255, 0, 0) 4% 90%,transparent);
-		&::after{
+		scrollbar-color: rgba(146, 146, 146, 0.6) transparent;
+		overflow-y: scroll;
+
+		&::after {
 			display: block;
 			content: "dummy text";
 			opacity: 0;
@@ -209,19 +206,10 @@
 			aspect-ratio: 1/1;
 		}
 	}
-	section.switchpane {
-		display: flex;
-		flex-direction: column;
-		> article {
-			display: flex;
-			flex-direction: column;
-		}
-	}
 	section.switchpane > article.explorer {
 		position: relative;
 		flex-grow: 1;
-		overflow: clip;
-		height: 100%;
+		overflow: hidden;
 		background-image: radial-gradient(
 				circle at 100% 80%,
 				oklch(89% 0.117 202 / 0.3),
@@ -229,16 +217,16 @@
 			),
 			radial-gradient(
 				circle at center left,
-				oklch(72.271% 0.06489 155.339 / 0.75) 0%,
-				oklch(56.265% 0.0789 154.2 / 0.75) 25% 14%,
+				oklch(72% 0.06 155 / 0.75) 0%,
+				oklch(56% 0.07 154 / 0.75) 25% 14%,
 				transparent 75%
 			),
 			radial-gradient(
 				circle at top right,
 				oklch(70% 0.1 318 / 0.75),
-				oklch(59.68% 0.08 318 / 0.75) 10%,
-				oklch(40.108% 0.05 318 / 0.75) 50%,
-				oklch(33.289% 0.00004 271 / 0.75)
+				oklch(59% 0.08 318 / 0.75) 10%,
+				oklch(40% 0.05 318 / 0.75) 50%,
+				oklch(33% 0.01 271 / 0.75)
 			);
 		.folders {
 			padding: var(--em) var(--em-2);
@@ -247,7 +235,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: start;
-			background-color: oklch(30.118% 0.00003 271.152 / 0.5);
+			background-color: oklch(30% 0.01 271 / 0.5);
 			.dir {
 				display: flex;
 			}
