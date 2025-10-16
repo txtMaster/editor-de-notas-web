@@ -25,7 +25,9 @@ export const ProfileSection: React.FC<Props> = ({ className = "" }) => {
 	return (
 		<div className={`profile ${s.root} ${className}`}>
 			<div className="title">Profile</div>
-			<ProfileIcon className="icon" />
+			<div className="icon-wrapper">
+				<ProfileIcon className="icon" />
+			</div>
 			<label>
 				Name:
 				<input
@@ -45,13 +47,14 @@ export const ProfileSection: React.FC<Props> = ({ className = "" }) => {
 				/>
 			</label>
 			<label htmlFor="password">
-				Change password:
+				Password:
 				<form className="password-wrap">
 					<input
 						type={hide ? "password" : "text"}
 						name="password"
 						autoComplete={"true"}
 					/>
+					
 					<button type="button" onClick={() => setHide((is) => !is)}>
 						{hide ? "show" : "hide"}
 					</button>
