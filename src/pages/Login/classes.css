@@ -1,0 +1,8 @@
+@import url("../../theme.css");
+
+@layer classes{
+    .link{
+        text-decoration: underline;
+        text-underline-offset: calc(1em / 4);
+    }
+}

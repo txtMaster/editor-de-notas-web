@@ -1,15 +1,18 @@
-import { SelectableNote } from "../model/NoteModels";
-import type { Note } from "../types/Note";
+import { createDefaultNote, type Note } from "../types/Note";
+import type { OrderCallbackObject } from "../types/OrderCallback";
 import { useListManager } from "./useListManager";
 
-
-export function useNotesManager(){
-	return useListManager<Note,SelectableNote>(
-	SelectableNote,
-	{
-		id:(a:Note,b:Note)=>parseFloat(a.id) - parseFloat(b.id),
-		title:(a:Note,b:Note)=>a.title.localeCompare(b.title),
-		content:(a:Note,b:Note)=>a.content.localeCompare(b.content),
+export function useNotesManager() {
+	const orderFunctions: OrderCallbackObject<Note> = {
+		title: (a: Note, b: Note) => a.title.localeCompare(b.title),
+		created_at: (a: Note, b: Note) => {
+			return (
+				new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
+			);
+		},
 	}
-)
+	return {
+		...useListManager<Note>(createDefaultNote(), orderFunctions),
+		orderFuctions: orderFunctions
+	};
 }

@@ -1,27 +1,27 @@
-import type { Note } from "../../types/Note";
 import s from "./NoteList.module.css";
 import { NoteCard } from "../NoteCard/NoteCard";
-import { Base } from "../../utils/BaseComponent";
-import type { SelectableNote } from "../../model/NoteModels";
 import { useSelectableList } from "../../hooks/useSelectableList";
+import type { Note } from "../../types/Note";
+import type { OrderCallback } from "../../types/OrderCallback";
+import type { BaseProps } from "../../types/PropsTypes";
 
-type Prop = {
-	notes: Map<string, SelectableNote>;
-	orderedNotes: SelectableNote[];
+type Props = BaseProps & {
+	notes: Map<string, Note>;
+	orderedNotes: Note[];
 	selectedIds: Set<string>;
-	orderCallback: (a: Note, b: Note) => number;
+	orderCallback?: OrderCallback<Note>;
 	isReverse:boolean
 	onSelectIds?: (ids: Set<string>) => void;
 	onDeleteNotes?: (ids: string[]) => void;
 };
 
-export const NoteList = Base<Prop>(
+export const NoteList: React.FC<Props> = (
 	({
 		notes,
 		orderedNotes,
 		selectedIds,
 		onSelectIds = () => {},
-		orderCallback,
+		orderCallback = ()=>0,
 		className = "",
 		isReverse = false
 	}) => {
@@ -46,7 +46,7 @@ export const NoteList = Base<Prop>(
 							<NoteCard
 								key={n.id}
 								className={n.selected ? "selected" : ""}
-								note={n.getBaseData()}
+								note={n}
 								onClick={(e)=>handleClickItem(e,n.id)}
 							/>
 						);

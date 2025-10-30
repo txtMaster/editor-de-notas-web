@@ -1,3 +1,4 @@
+@layer component,classes, theme, page, media;
 .logo {
   height: 6em;
   padding: 1.5em;

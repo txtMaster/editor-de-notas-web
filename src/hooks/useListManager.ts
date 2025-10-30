@@ -1,86 +1,90 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { SelectableModel } from "../model/BaseModel";
-import type { OrderCallback } from "../types/OrderCallback";
+import type { OrderCallbackObject } from "../types/OrderCallback";
+import type { Selectable } from "../types/Selectable";
 import type { WithID } from "../types/WithID";
+import type { WithDate } from "../types/WithDate";
+import type { Editable } from "../types/Editable";
 
 export function useListManager<
-	Data extends WithID,
-	Model extends SelectableModel<Data>
+T extends Selectable & WithID & WithDate & Editable
 >(
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	ModelClass: new (...args: any[]) => Model,
-	sortFns: Record<keyof Data, OrderCallback<Data>>,
-	defaultItems: Map<string, Model> = new Map()
+	defaultItem: T,
+	sortFns: OrderCallbackObject<T>,
+	defaultItems: Map<string, T> = new Map()
 ) {
-	const [sortBy, setSortBy] = useState<keyof Data>(
-		Object.keys(sortFns)[0] as keyof Data
+	const [sortBy, setSortBy] = useState<keyof T>(
+		(Object.keys(sortFns) as Array<keyof T>)[0] as keyof T
 	);
 	const [isAsc, setIsAsc] = useState<boolean>(true);
 
-	const [items, setItems] = useState<Map<string, Model>>(defaultItems);
+	const [items, setItems] = useState<Map<string, T>>(defaultItems);
 	const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-	const orderedItems: Model[] = useMemo(() => {
+	const orderedItems: T[] = useMemo(() => {
+		const orderCallback = sortFns[sortBy] ?? null;
+		if(!orderCallback)return [...items.values()];
 		const sorted = [...items.values()].sort((a, b) => {
-			return sortFns[sortBy](a.getBaseData(), b.getBaseData());
+			return orderCallback(a, b);
 		});
 		return isAsc ? sorted : sorted.reverse();
 	}, [isAsc, items, sortBy, sortFns]);
 
 	const currentId = [...selectedIds].at(-1) ?? null;
-	const [currentItem, setCurrentItem] = useState<Data | null>(null);
+	const [currentItem, setCurrentItem] = useState<T | null>(null);
 
-	//editar los attrs "selected" de las notas cuando se editan las ids selecionadas
+	//editar los attrs "selected" de los items cuando se editan las ids selecionadas
 	useEffect(() => {
 		setItems((prev) => {
 			const updated = new Map(prev);
-			for (const [id, note] of prev) {
+			for (const [id, item] of prev) {
 				const isSelected = selectedIds.has(id);
-				if (note.selected !== isSelected) {
-					note.selected = isSelected;
-					updated.set(id, note);
+				if (item.selected !== isSelected) {
+					item.selected = isSelected;
+					updated.set(id, item);
 				}
 			}
 			return updated;
 		});
 	}, [selectedIds]);
-	//se actualiza la nota editada, asignandole la nota del ultimo id seleccionado
+	//se actualiza el item editado, asignandole el item del ultimo id seleccionado
 	useEffect(() => {
-		setCurrentItem(items.get(currentId ?? "")?.getBaseData() ?? null);
+		setCurrentItem(items.get(currentId ?? "") ?? null);
 	}, [currentId, items, selectedIds]);
 
 	const createItem = useCallback(
-		(item: Data) => {
+		(item: T) => {
 			let id: string;
 			do id = Math.floor(Math.random() * 100).toString();
 			while (items.has(id));
 
-			const newNote = new ModelClass({ ...item, id });
-			setItems((pre) => new Map(pre).set(id, newNote));
+			const newItem = {...defaultItem, ...item, id };
+			setItems((pre) => new Map(pre).set(id, newItem));
 			setSelectedIds(new Set([id]));
 		},
-		[ModelClass, items]
+		[defaultItem, items]
 	);
 	//callback para cuando guardar un item
-	const saveItem = useCallback((note: Data | null = null) => {
-		if (!note) return;
+	const saveItem = useCallback((item: T | null = null) => {
+		if (!item) return;
 		setItems((prev) => {
 			const updated = new Map(prev);
-			const existing = prev.get(note.id);
-			let updatedModel: Model;
+			const existing = prev.get(item.id);
+			let updatedItem: T;
 			if (existing) {
-				updatedModel = existing;
-				updatedModel.setBaseData(note);
+				updatedItem = existing;
+				updatedItem = {...item};
 			} else {
-				updatedModel = new ModelClass({ ...note });
+				updatedItem = { ...item };
 			}
-			setSelectedIds(new Set([note.id]));
-			updated.set(updatedModel.id, updatedModel);
+			updatedItem.updated_at = new Date();
+			updatedItem.state = "saved";
+			setSelectedIds(new Set([item.id]));
+			updated.set(updatedItem.id, updatedItem);
 			return updated;
 		});
-	}, [ModelClass]);
+	}, []);
 
-    	//callback para borrar todas las notas seleccionadas
+    	//callback para borrar todas los items seleccionados
 	const deleteSelectedItems = useCallback(() => {
 		setItems((prev) => {
 			const next = new Map(prev);
@@ -92,16 +96,16 @@ export function useListManager<
 
 
     	return {
-		/**Map con todas las notas existentes */
+		/**Map con todas los items existentes */
 		items,
-		/**Array con las notas ordenadas */
+		/**Array con los items ordenados */
 		orderedItems,
-		/**Set con las ids de las notas selecionadas */
+		/**Set con las ids de los items seleccionados */
 		selectedIds,
 		setSelectedIds,
-		/**nota seleccionada para editar */
+		/**item seleccionado para editar */
 		currentItem,
-		/**id de la ultima nota seleccionada */
+		/**id del ultimo item seleccionado */
 		currentId,
 		setCurrentItem,
 		createItem,

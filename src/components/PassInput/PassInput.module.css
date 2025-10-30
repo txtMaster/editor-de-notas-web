@@ -1,0 +1,19 @@
+.root {
+	display: flex;
+	flex-direction: row;
+	input {
+		flex-grow: 1;
+	}
+	button {
+        aspect-ratio: 1/1;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+		svg {
+            fill: currentColor;
+			height: 1.5rem;
+			width: 1.5rem;
+		}
+	}
+}

@@ -335,7 +335,9 @@
 					justify-content: space-around;
 					flex-direction: row;
 					padding: 0;
+					flex-wrap: wrap;
 					button {
+						
 						font-weight: bold;
 						padding: var(--em--3);
 						flex-grow: 1;
@@ -361,16 +363,20 @@
 				height: 100%;
 				gap: var(--em--2);
 				:global(.notecard) {
-					background-color: oklch(30.118% 0.00003 271 / 0.5);
+					--alpha:0.5;
+					background-color: oklch(30.118% 0.00003 271 / var(--alpha));
 					align-items: start;
 					padding: var(--em--2) var(--em);
-					border-radius: var(--em);
+					border-radius: var(--em-3);
 					&:global(.selected) {
-						background-color: oklch(30.118% 0.00003 271 / 1);
+						--alpha:1;
 						box-shadow: 0px var(--em--4) var(--em--1) oklch(0 0 0 / 0.25);
 					}
+					&:not(:global(.saved)){
+						background-color: oklch(50% 0.015 80.09 / var(--alpha));
+					}
 					:global(.title) {
-						font-size: var(--em-1);
+						font-size: var(--em-3);
 						letter-spacing: var(--em--5);
 						word-spacing: var(--em--4);
 						font-weight: bolder;

@@ -28,7 +28,20 @@
 		font-weight: bold;
 	}
 	.content {
-		font-size: .8em;
+		font-size: 0.8em;
 		color: oklch(from currentColor calc(l * 0.9) c h);
+	}
+	.root > :global(.dates) {
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		:global(.date) {
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			overflow-x: hidden;
+			display: flex;
+			flex-wrap: nowrap;
+		}
 	}
 }

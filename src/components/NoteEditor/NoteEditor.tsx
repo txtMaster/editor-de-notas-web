@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import type { OutCSS } from "../../types/OutCSS";
-import { type Note } from "../../types/Note";
 import s from "./NoteEditor.module.css";
-import NoteModel from "../../model/NoteModels";
+import { createDefaultNote, type Note } from "../../types/Note";
+import { dateToFullString} from "../../utils/DateUtils";
 
 type Props = OutCSS & {
 	note: Note | null;
@@ -10,7 +10,7 @@ type Props = OutCSS & {
 };
 
 export const NoteEditor: React.FC<Props> = ({
-	note = NoteModel.default(),
+	note = createDefaultNote(),
 	className = "",
 	onChange = () => {},
 }) => {
@@ -32,11 +32,11 @@ export const NoteEditor: React.FC<Props> = ({
 			<div className="dates">
 				<div className="date">
 					<div className="name">Created:</div>
-					<div className="value">20-22-2025</div>
+					<div className="value">{dateToFullString(note?.created_at)}</div>
 				</div>
 				<div className="date">
 					<div className="name">Updated:</div>
-					<div className="value">20-22-2025</div>
+					<div className="value">{dateToFullString(note?.updated_at)}</div>
 				</div>
 			</div>
 			<label className="content">

@@ -1,0 +1,64 @@
+@layer media {
+    @media (orientation: landscape) {
+        body{
+        }
+    }
+    @media (orientation: portrait) {
+        body{
+            background-color: orange;
+        }
+    }
+	/*mobile*/
+	@media screen and (max-width: 400px) {
+		body {
+		}
+	}
+    /*square*/
+	@media screen and (min-width: 700px) {
+		body {
+		}
+        #root >*{
+            height: 100%;
+            border-radius: calc(var(--rad-2) - var(--em-1));
+        }
+        #root .left{
+            width: 50%;
+            background-image: url(/w.jpg);
+            background-size: cover;
+            background-position: bottom;
+            background-repeat: no-repeat;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: var(--em--1);
+
+            .top{
+                display: flex;
+                width: fit-content;
+                gap: var(--em-1);
+                align-self: flex-end;
+                font-size: var(--em--1);
+                &>*{
+                    border-radius: var(--rad-full);
+                }
+
+                a{
+                    padding: var(--em--3) var(--em);
+                    color: white;
+                    background-color: var(--bg-c-glass);
+                    letter-spacing: var(--ls-1);
+                }
+            }
+            .bottom{
+                padding: var(--em-4);
+                font-size: var(--em-2);
+                background-color: var(--bg-c-glass);
+                backdrop-filter: var(--bf-glass);
+                border-radius: var(--rad-1);
+            }
+        }
+        #root .right{
+            width: 50%;
+        }
+	}
+}

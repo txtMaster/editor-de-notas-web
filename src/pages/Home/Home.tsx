@@ -9,11 +9,10 @@ import ArrowUpIcon from "../../assets/svg/arrow-up.svg?react";
 import { ToggleButtons } from "../../components/ToggleButtons/ToggleButtons";
 import { Resizable } from "../../components/Resizable/Resizable";
 import { NoteEditor } from "../../components/NoteEditor/NoteEditor";
-import NoteModel, { SelectableNote } from "../../model/NoteModels";
 import { CrudButtons } from "../../components/CrudButtons/CrudButtons";
-import type { Note } from "../../types/Note";
-import { useListManager } from "../../hooks/useListManager";
 import { ProfileSection } from "../../components/ProfileSection/ProfileSection";
+import { createDefaultNote} from "../../types/Note";
+import { useNotesManager } from "../../hooks/useNotesManager";
 
 const Sections = {
 	MyNotes: "mynotes",
@@ -24,15 +23,10 @@ const Sections = {
 	Reload: "reload",
 } as const;
 
-const OrderFunctions = {
-	id: (a: Note, b: Note) => parseFloat(a.id) - parseFloat(b.id),
-	title: (a: Note, b: Note) => a.title.localeCompare(b.title),
-	content: (a: Note, b: Note) => a.content.localeCompare(b.content),
-};
-
 export const Home = () => {
 	const [sectionKey, setSectionKey] = useState<string | null>(null);
 	const {
+		orderFuctions,
 		items: notes,
 		orderedItems: orderedNotes,
 		selectedIds,
@@ -47,111 +41,120 @@ export const Home = () => {
 		setIsAsc,
 		isAsc,
 		sortBy,
-	} = useListManager<Note, SelectableNote>(SelectableNote, OrderFunctions);
+	} = useNotesManager();
 
 	return (
 		<div className={s.home}>
-				<ToggleButtons
-					className={`
+			<ToggleButtons
+				className={`
 						${s.togglebuttons}
 						${s.togglesections}
 					`}
-					activeClass={s.active}
-					onToggleKey={setSectionKey}
-					contents={{
-						[Sections.MyNotes]: <><NotesIcon />notes</>,
-						[Sections.Config]: <><ConfigIcon />config</>,
-						[Sections.Profile]: <><ProfileIcon />profile</>,
-					}}
-				/>
-				<Resizable className={s.resizable} hide={sectionKey === null}>
-					<SwitchPane
-						className={s.switchpane}
-						sectionKey={sectionKey}
-						sections={{
-							[Sections.Config]: <div>configuracion</div>,
-							[Sections.MyNotes]: (
-								<article className={s.explorer}>
-									<div className={s.folders}>
-										<div className={s.dir}>
-											Home 
-											<div>../subfolder/currentFolder</div>
-										</div>
-										<label className={s.foldername}>
-											Folder name: 
-											<input type="text" />
-											<button>save</button>
-										</label>
+				activeClass={s.active}
+				onToggleKey={setSectionKey}
+				contents={{
+					[Sections.MyNotes]: (
+						<>
+							<NotesIcon />
+							notes
+						</>
+					),
+					[Sections.Config]: (
+						<>
+							<ConfigIcon />
+							config
+						</>
+					),
+					[Sections.Profile]: (
+						<>
+							<ProfileIcon />
+							profile
+						</>
+					),
+				}}
+			/>
+			<Resizable className={s.resizable} hide={sectionKey === null}>
+				<SwitchPane
+					className={s.switchpane}
+					sectionKey={sectionKey}
+					sections={{
+						[Sections.Config]: <div>configuracion</div>,
+						[Sections.MyNotes]: (
+							<article className={s.explorer}>
+								<div className={s.folders}>
+									<div className={s.dir}>
+										Home
+										<div>../subfolder/currentFolder</div>
 									</div>
-									<div className={s.notes}>
-										<div className={s.filter}>
-											Filters:
-											<ToggleButtons
-												unselectable={false}
-												className={`
+									<label className={s.foldername}>
+										Folder name:
+										<input type="text" />
+										<button>save</button>
+									</label>
+								</div>
+								<div className={s.notes}>
+									<div className={s.filter}>
+										Filters:
+										<ToggleButtons
+											unselectable={false}
+											className={`
 											${s.toggleorder}
 											${isAsc ? s.asc : ""}
 										`}
-												activeClass={s.active}
-												onClickButton={(k) => {
-													console.log(sortBy === k);
-													if (!k) return;
-													if (sortBy === k) setIsAsc((pre) => !pre);
-													else setSortBy(k);
-												}}
-												contents={{
-													id: (
-														<>
-															id
-															<ArrowUpIcon />
-														</>
-													),
-													content: (
-														<>
-															content
-															<ArrowUpIcon />
-														</>
-													),
-													title: (
-														<>
-															title
-															<ArrowUpIcon />
-														</>
-													),
-												}}
-											/>
-										</div>
-										<NoteList
-											selectedIds={selectedIds}
-											orderedNotes={orderedNotes}
-											className={s.notelist}
-											notes={notes}
-											orderCallback={OrderFunctions[sortBy]}
-											isReverse={isAsc}
-											onSelectIds={setSelectedIds}
+											activeClass={s.active}
+											onClickButton={(k) => {
+												if (!k) return;
+												if (sortBy === k) setIsAsc((pre) => !pre);
+												else setSortBy(k);
+											}}
+											contents={{
+												title: (
+													<>
+														title
+														<ArrowUpIcon />
+													</>
+												),
+												created_at: (
+													<>
+														created at
+														<ArrowUpIcon />
+													</>
+												),
+
+											}}
 										/>
 									</div>
-								</article>
-							),
-							[Sections.Profile]: (
-								<ProfileSection className={s.profile}></ProfileSection>
-							),
-						}}
-					/>
-				</Resizable>
-				<div className={s.editor}>
-					<NoteEditor onChange={setEditedNote} note={editedNote} />
-					<CrudButtons
-						disabled={editedNote === null}
-						className={s.crudbuttons}
-						onAdd={() => createNote(NoteModel.default())}
-						onSave={() => saveNote(editedNote)}
-						onReload={() => {
-							setEditedNote(notes.get(currentId ?? "") ?? null);
-						}}
-						onDelete={() => deleteNotes()}
-					/>
-				</div>			
+									<NoteList
+										selectedIds={selectedIds}
+										orderedNotes={orderedNotes}
+										className={s.notelist}
+										notes={notes}
+										orderCallback={orderFuctions[sortBy]}
+										isReverse={isAsc}
+										onSelectIds={setSelectedIds}
+									/>
+								</div>
+							</article>
+						),
+						[Sections.Profile]: (
+							<ProfileSection className={s.profile}></ProfileSection>
+						),
+					}}
+				/>
+			</Resizable>
+			<div className={s.editor}>
+				<NoteEditor onChange={setEditedNote} note={editedNote} />
+				<CrudButtons
+					disabled={editedNote === null}
+					className={s.crudbuttons}
+					onAdd={() => createNote(createDefaultNote())}
+					onSave={() => saveNote(editedNote)}
+					onReload={() => {
+						setEditedNote(notes.get(currentId ?? "") ?? null);
+					}}
+					onDelete={() => deleteNotes()}
+				/>
+			</div>
 		</div>
 	);
 };
