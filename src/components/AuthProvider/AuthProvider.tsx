@@ -1,67 +1,51 @@
-import { useCallback, useEffect, useMemo, useState, type JSX } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState} from "react";
 import { AuthContext, type Profile } from "../../context/AuthContext";
 
 const PROFILE_STORAGE_KEY: string = "app_profile";
 
-export const AuthProvider = ({ children }: { children: JSX.Element }) => {
-	const [fetching, setFetching] = useState<boolean>(false);
+export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+	const fetchingRef = useRef(false);
 	const [profile, setProfile] = useState<Profile>(() => {
 		const saved = localStorage.getItem(PROFILE_STORAGE_KEY);
 		return saved ? JSON.parse(saved) : null;
 	});
 	const isAuthenticated = useMemo(() => profile !== null, [profile]);
 
-	/*
-	const logout: ()=>Promise<string> = useCallback(async () => {
-		if (fetching) throw new Error("en cola, reintentar mas tarde");
-		setFetching(true);
+	const logout:()=>Promise<string> = useCallback(async():Promise<string>=>{
+		if(fetchingRef.current)  throw new Error("en cola, reintentar mas tarde");
+		fetchingRef.current = true;
 		try {
-			await new Promise((res)=>setTimeout(res,500));
 			setProfile(null);
-			return "guardado correctamente"
+			return "guardado";
+		} catch (err) {
+			console.log(err)
+			return "ocurrio un error";
 		} finally {
-			setFetching(false);
+			fetchingRef.current = false;
 		}
-	}, [fetching]);
-	*/
+	},[]);
 
-	const logout:()=>Promise<string> = useCallback(()=>new Promise<string>((res,rej)=>{
-		if(fetching)return rej("en cola, reintentar mas tarde");
-		setFetching(true);
-		setTimeout(()=>{
-			try{
-				setProfile(null);
-				res("guardado");
-			}catch(err){
-				rej(err);
-			}finally{
-				setFetching(false);
-			}
-		},500);
-	}),[fetching]);
-
-	const login: () => Promise<string> = useCallback(async () => {
-		if (fetching) throw new Error("en cola, reintentar más tarde");
-		setFetching(true);
-
-		try {
-			await new Promise((res) => setTimeout(res, 500));
-			setProfile({ name: "test user", email: "ejemplo@" });
+	const login = useCallback(async (): Promise<string>=>{
+		if (fetchingRef.current) throw new Error("en cola, reintentar mas tarde")
+			fetchingRef.current = true;
+		try{
+			await new Promise((res)=>setTimeout(res,500));
+			setProfile({name:"test user",email:"example@test.com"})
 			return "guardado correctamente";
-		} finally {
-			setFetching(false);
+		}finally{
+			fetchingRef.current = false;
 		}
-	}, [fetching]);
+	},[]);
 
 	useEffect(() => {
 		if (profile === null) localStorage.removeItem(PROFILE_STORAGE_KEY);
-		localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
+		else localStorage.setItem(PROFILE_STORAGE_KEY, JSON.stringify(profile));
 	}, [profile]);
 	return (
 		<AuthContext.Provider
 			value={{
 				isAuthenticated,
-				fetching,
+				fetching: fetchingRef.current,
 				profile,
 				login,
 				logout,

@@ -9,10 +9,10 @@ export type Profile = null | {
 
 type AuthContextType = {
 	isAuthenticated: boolean;
-	profile: Profile;
+	profile: Profile | null;
 	login: ()=>Promise<string>;
 	logout: ()=>Promise<string>;
 	fetching: boolean;
 };
 
-export const AuthContext = createContext<AuthContextType | undefined>(undefined);
+export const AuthContext = createContext<AuthContextType | null>(null);

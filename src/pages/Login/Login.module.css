@@ -2,18 +2,18 @@
 @import "./classes.css";
 
 @layer page {
-	body {
+	.root {
 		background-color: var(--gray);
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
+		display: flex;
 		align-items: center;
 		justify-content: center;
 		color: white;
+		height: 100vh;
 	}
-
-	#root {
-		color: white;
+	.main{
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
@@ -27,20 +27,22 @@
 		height: 75vmin;
 		max-width: 90vw;
 	}
-	#root .left {
+	.main .left {
 		background-color: antiquewhite;
+		width: 48%;
 	}
-	#root .right {
+	.main .right {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: start;
 		padding-inline: var(--em-4);
 		gap: var(--em-5);
-		.head{
+		.head {
 			text-align: start;
 		}
 		.form {
+			width: 100%;
 			align-self: stretch;
 			border-radius: 20px;
 			color: inherit;
@@ -60,7 +62,7 @@
 				border-radius: var(--em--3);
 				background-color: oklch(60% 35% var(--h-purple));
 				box-shadow: 0 2px 10px 2px oklch(0.2 0 0 / 0.2);
-				&:hover{
+				&:hover {
 					filter: var(--hover-bright-1);
 				}
 			}
@@ -71,24 +73,32 @@
 				display: flex;
 				flex-direction: column;
 				gap: 0;
+				input{
+				}
 			}
-			label input, .passinput {
+			label input,
+			:global(.passinput) {
 				background-color: oklch(38% 10% var(--h-purple));
-				padding: var(--em);
 				border-radius: var(--em--3);
 			}
-			.passinput{
-				padding: 0;
+			label input {
+				padding: var(--em);
+			}
+			:global(.passinput) {
+				padding: var(--em--1);
+				input {
+					padding: 0;
+				}
 			}
 			.conditions {
 				display: flex;
 				padding-inline: var(--em--1);
 				align-items: center;
-				label{
+				label {
 					align-items: center;
 					flex-direction: row;
 					gap: var(--em-1);
-					input{
+					input {
 						color: oklch(60% 35% var(--h-purple));
 					}
 				}

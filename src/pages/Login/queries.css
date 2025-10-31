@@ -5,7 +5,6 @@
     }
     @media (orientation: portrait) {
         body{
-            background-color: orange;
         }
     }
 	/*mobile*/
@@ -14,15 +13,13 @@
 		}
 	}
     /*square*/
-	@media screen and (min-width: 700px) {
-		body {
-		}
-        #root >*{
+	@media screen and (min-width: 500px) {
+        .main >*{
             height: 100%;
             border-radius: calc(var(--rad-2) - var(--em-1));
         }
-        #root .left{
-            width: 50%;
+        .main .left{
+            flex-grow: 0;
             background-image: url(/w.jpg);
             background-size: cover;
             background-position: bottom;
@@ -57,8 +54,8 @@
                 border-radius: var(--rad-1);
             }
         }
-        #root .right{
-            width: 50%;
+        .main .right{
+            flex-grow: 1;
         }
 	}
 }
