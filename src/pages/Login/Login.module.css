@@ -10,28 +10,39 @@
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		color: white;
 		height: 100vh;
 	}
-	.main{
+	.main {
 		display: flex;
 		flex-direction: row;
 		justify-content: center;
 		align-items: center;
 		width: auto;
 		padding: var(--em-1);
-		gap: var(--em-1);
+		
 		border-radius: var(--rad-1);
 		background-color: var(--purple);
-		aspect-ratio: 3/2;
-		height: 75vmin;
-		max-width: 90vw;
+		aspect-ratio: 2/3;
+		height: 82vmin;
+		max-width: 90vmin;
+	}
+	.github {
+		display: flex;
+		align-items: center;
+		justify-content: center;
 	}
 	.main .left {
-		background-color: antiquewhite;
 		width: 48%;
+		.bottom{
+			color: white;
+		}
 	}
 	.main .right {
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+	.main .right .login, .main .right .signup {
+		overflow: hidden;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -40,6 +51,10 @@
 		gap: var(--em-5);
 		.head {
 			text-align: start;
+			div{
+				display: flex;
+				gap: var(--em--2);
+			}
 		}
 		.form {
 			width: 100%;
@@ -53,33 +68,39 @@
 				display: grid;
 				gap: var(--em);
 				grid-template-columns: 1fr auto;
-				color: white;
 				text-align: left;
 			}
-			button[type="submit"] {
+			button[type="submit"],
+			.btnpreview {
+				color: white;
 				margin-top: var(--em-3);
 				padding: var(--em);
-				border-radius: var(--em--3);
-				background-color: oklch(60% 35% var(--h-purple));
+				border-radius: var(--em--2);
+				background-color: oklch(56% 30% var(--h-purple));
 				box-shadow: 0 2px 10px 2px oklch(0.2 0 0 / 0.2);
 				&:hover {
 					filter: var(--hover-bright-1);
 				}
 			}
-			button[type="button"] {
-				font-size: var(--em--1);
+
+			.btnpreview {
+				margin: 0;
+				display: none;
+				background-color: oklch(38% 10% var(--h-purple));
+				padding: var(--em--2);
 			}
+
 			label {
 				display: flex;
 				flex-direction: column;
 				gap: 0;
-				input{
+				input {
 				}
 			}
 			label input,
 			:global(.passinput) {
 				background-color: oklch(38% 10% var(--h-purple));
-				border-radius: var(--em--3);
+				border-radius: var(--em--2);
 			}
 			label input {
 				padding: var(--em);
@@ -100,6 +121,8 @@
 					gap: var(--em-1);
 					input {
 						color: oklch(60% 35% var(--h-purple));
+						display: flex;
+						align-items: center;
 					}
 				}
 			}

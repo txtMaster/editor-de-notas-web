@@ -37,7 +37,10 @@ export const AutoSlider: React.FC<Props> = ({ items = [],inteval = 3000 }) => {
 			</div>
 			<div className="controls">
 				{items.map((_, i) => (
-					<div key={i} className={`${i === index ? "active" : ""}`}>
+					<div 
+					key={i} 
+					className={`${i === index ? "active" : ""}`}
+					onClick={()=>setIndex(i)}>
                     </div>
 				))}
 			</div>

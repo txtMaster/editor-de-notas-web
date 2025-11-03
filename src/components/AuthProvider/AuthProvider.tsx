@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState} from "react";
-import { AuthContext, type Profile } from "../../context/AuthContext";
+import { AuthContext, type LoginData, type Profile } from "../../context/AuthContext";
+import { API_URL } from "../../config/env";
 
 const PROFILE_STORAGE_KEY: string = "app_profile";
 
@@ -25,11 +26,23 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 		}
 	},[]);
 
-	const login = useCallback(async (): Promise<string>=>{
+	const login = useCallback(async (data:LoginData): Promise<string>=>{
 		if (fetchingRef.current) throw new Error("en cola, reintentar mas tarde")
 			fetchingRef.current = true;
 		try{
-			await new Promise((res)=>setTimeout(res,500));
+			const res = await fetch(`${API_URL}/users/login`,{
+				method:"POST",
+				body:JSON.stringify(data),
+				headers: {"Content-Type":"application/json"}
+			});
+			if(res.ok){
+				console.log(res)
+				const responseData = await res.json()
+				return responseData;
+			}else {
+				console.log(res)
+			}
+
 			setProfile({name:"test user",email:"example@test.com"})
 			return "guardado correctamente";
 		}finally{

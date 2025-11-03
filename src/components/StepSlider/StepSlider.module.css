@@ -1,0 +1,28 @@
+@layer component {
+	.root {
+		width: 100%;
+		max-width: 100%;
+        height: 100%;
+		overflow: hidden;
+		.slider {
+			--step:0;
+			--gap:50px;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: nowrap;
+			width: 100%;
+			max-width: 100%;
+            min-width: 100%;
+            height: 100%;
+			position: relative;
+            transition: transform .3s;
+			transform: translateX(calc(var(--step) * -100% - ((var(--step)) * (var(--gap)))));
+			gap: var(--gap);
+		}
+		.slider > *{
+			min-width: 100%;
+			width: 100%;
+			height: 100%;
+		}
+	}
+}

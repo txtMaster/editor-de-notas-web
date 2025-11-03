@@ -4,5 +4,7 @@
     .link{
         text-decoration: underline;
         text-underline-offset: calc(1em / 4);
+        text-wrap: nowrap;
+        color: var(--purple-acent);
     }
 }

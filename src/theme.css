@@ -1,6 +1,7 @@
 @layer theme {
 	html {
 		font-size: clamp(2px, 2.5vw, 1.8vmin);
+		color: oklch(.85 0 0);
 	}
 	:root {
 		--main-h: 220deg;
@@ -30,7 +31,8 @@
 		--h-purple: 300;
 
 		--purple: oklch(30% 12% var(--h-purple));
-		--gray: #686279;
+		--purple-acent: oklch(70% 25% var(--h-purple));
+		--gray: oklch(40% 14% var(--h-purple));
 		--bg-c-glass: oklch(40% 20% var(--h-purple) / 0.2);
 		--ls-1: var(--em--5);
 
@@ -41,6 +43,9 @@
 	h2 {
 		font-size: 250%;
 		font-weight: 500;
+	}
+	h1,h2,h3,h4,h5{
+		color: white;
 	}
 
 	input,
@@ -53,6 +58,9 @@
 		&::placeholder {
 			color: oklch(from currentColor calc(l * 0.8) c h);
 		}
+	}
+	button{
+		color: inherit;
 	}
 	a {
 		color: oklch(81.984% 0.08 var(--h-purple));
@@ -77,4 +85,8 @@
 		aspect-ratio: 1/1;
 	}
 
+	svg{
+		height: 1rem;
+		width: 1rem;
+	}
 }

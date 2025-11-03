@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { OutCSS } from "../../types/OutCSS";
-import ShowIcon from "../../../public/icons/show.svg?react";
-import HideIcon from "../../../public/icons/hide.svg?react";
+import ShowIcon from "../../assets/svg/show.svg?react";
+import HideIcon from "../../assets/svg/hide.svg?react";
 import s from "./PassInput.module.css";
 
 type Props = OutCSS & {
